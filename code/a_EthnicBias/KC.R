@@ -18,7 +18,9 @@ library(xtable)
 
 
 ## Read in data 
-dta <- fread("instances_mergerd_seattle.csv", verbose=F)
+#dta <- fread("../../../../../KangData/instances_mergerd_seattle.csv", verbose=F)
+dta <- fread("../data/instances_mergerd_seattle.csv", verbose=F)
+
 
 ## Augment year
 year <- as.numeric(substr(dta$inspection_period_end_date,start=1,stop=4))
@@ -38,6 +40,10 @@ diarrhea <- as.numeric(grepl("diarrhea", dta$review_contents))
 sick <- as.numeric(grepl("sick", dta$review_contents))
 homesick <- as.numeric(grepl("homesick", dta$review_contents))
 sick2 <- as.numeric(sick==1 & homesick==0)
+
+dta <- data.frame(dta, poison = poison, vomit = vomit, diarrhea = diarrhea, sick = sick,
+                  sick2=sick2)
+
 
 ## Foodborne illness indicators
 fbi <- as.numeric((poison+vomit+diarrhea+sick)>0)
@@ -61,11 +67,11 @@ cuisines <- unique(unlist(cuisines))
 cuisine.mat <- data.frame(matrix(NA, nrow(dta), length(cuisines)))
 names(cuisine.mat) <- cuisines
 for(i in 1:length(cuisines)){
-    cuisine.mat[,i] <- as.numeric(grepl(cuisines[i], dta$cuisines))
+  cuisine.mat[,i] <- as.numeric(grepl(cuisines[i], dta$cuisines))
 }
 
 ## Manually augment cuisines with "Asian" and "ethnic"
-labels <- read.csv("cuisines.csv", header=T, as.is=T)
+labels <- read.csv("../data/cuisines.csv", header=T, as.is=T)
 
 
 ## Simple indicator of Asian / Ethnic restaurant
@@ -76,6 +82,10 @@ ethnic <- as.numeric(apply(cuisine.mat[,labels$ethnic==1],1,sum)>0)
 ## Augmenting data frame
 dta <- data.frame(dta, asian = asian, ethnic = ethnic)
 
+
+
+## Used for Applying P&S because we want covariates and Asian/Non-Asian labels
+#write.csv(dta,'../data/KangData_with_additional_features.csv', row.names = FALSE)
 
 
 ##=========================================
@@ -116,7 +126,7 @@ all.zip <- unique(dta$zip_code)
 n.zip <- length(all.zip)
 zip.mat <- matrix(NA, nrow(dta), n.zip)
 for(i in 1:n.zip){
-    zip.mat[,i] <- as.numeric(dta$zip_code==all.zip[i])
+  zip.mat[,i] <- as.numeric(dta$zip_code==all.zip[i])
 }
 zip.mat <- data.frame(zip.mat)
 names(zip.mat) <- paste("zip",all.zip, sep="")
@@ -126,17 +136,17 @@ dta <- data.frame(dta, zip.mat)
 ## Balance table
 tab.out <- matrix(NA, n.zip, 7)
 for(i in 1:n.zip){
-    
-    my.t <- t.test(zip.mat[,i] ~ dta$asian)
-    tab.out[i,1] <- all.zip[i]
-    tab.out[i,2] <- my.t$estimate[2]*100
-    p1 <- mean(zip.mat[,i]==1 & asian==1)
-    tab.out[i,3] <- sqrt(p1 * (1-p1)/nrow(dta))*100
-    tab.out[i,4] <- my.t$estimate[1]*100
-    p0 <- mean(zip.mat[,i]==1 & asian==0)
-    tab.out[i,5] <- sqrt(p0 * (1-p0)/nrow(dta))*100
-    tab.out[i,6] <- my.t$p.value
-    tab.out[i,7] <- sum(zip.mat[,i])
+  
+  my.t <- t.test(zip.mat[,i] ~ dta$asian)
+  tab.out[i,1] <- all.zip[i]
+  tab.out[i,2] <- my.t$estimate[2]*100
+  p1 <- mean(zip.mat[,i]==1 & asian==1)
+  tab.out[i,3] <- sqrt(p1 * (1-p1)/nrow(dta))*100
+  tab.out[i,4] <- my.t$estimate[1]*100
+  p0 <- mean(zip.mat[,i]==1 & asian==0)
+  tab.out[i,5] <- sqrt(p0 * (1-p0)/nrow(dta))*100
+  tab.out[i,6] <- my.t$p.value
+  tab.out[i,7] <- sum(zip.mat[,i])
 }
 
 tab.out <- tab.out[order(tab.out[,7], decreasing=T),]
@@ -150,14 +160,14 @@ bin.cuts <- c(seq(0,35, by=2),90)
 k.bin <- length(bin.cuts)-1
 store <- matrix(NA, k.bin, 5)
 for(i in 1:k.bin){
-    which.sub <- dta$inspection_average_prev_penalty_scores>= bin.cuts[i] &
-        dta$inspection_average_prev_penalty_scores < bin.cuts[i+1]
-    dta.sub <- dta[which.sub,]
-    store[i,1] <- mean(dta.sub$fbi[dta.sub$asian==0])
-    store[i,2] <- mean(dta.sub$fbi[dta.sub$asian==1])
-    store[i,3] <- sum(dta.sub$asian==0)
-    store[i,4] <- sum(dta.sub$asian==1)
-    store[i,5] <- sum(bin.cuts[i]+bin.cuts[i+1])/2
+  which.sub <- dta$inspection_average_prev_penalty_scores>= bin.cuts[i] &
+    dta$inspection_average_prev_penalty_scores < bin.cuts[i+1]
+  dta.sub <- dta[which.sub,]
+  store[i,1] <- mean(dta.sub$fbi[dta.sub$asian==0])
+  store[i,2] <- mean(dta.sub$fbi[dta.sub$asian==1])
+  store[i,3] <- sum(dta.sub$asian==0)
+  store[i,4] <- sum(dta.sub$asian==1)
+  store[i,5] <- sum(bin.cuts[i]+bin.cuts[i+1])/2
 }
 ## Fixing up final bin (so that all data is displayed)
 store[k.bin,5] <- 34
