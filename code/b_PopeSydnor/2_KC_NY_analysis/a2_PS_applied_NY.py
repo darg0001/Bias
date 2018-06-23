@@ -3,10 +3,10 @@ from IPython.display import Image
 import matplotlib.pyplot as plt
 import sklearn.cross_validation
 
-execfile('../functions/python_libraries.py')
-execfile('../functions/simulation_functions.py')
+execfile('../../functions/python_libraries.py')
+execfile('../../functions/simulation_functions.py')
 
-ny_df = pd.read_csv('./CleanData.csv')
+ny_df = pd.read_csv('../../../data/NYData.csv')
 
 
 
@@ -248,6 +248,6 @@ results = pd.DataFrame({'Full_RF_RMSE_test': full_rmse,
                        'Restricted_OLS_RMSE_test': restricted_rmse_OLS,
                        'Restricted_OLS_RMSE_train': restricted_train_rmse_OLS})
 
-results.to_csv('NYC_output_all_years_additional_features_meanSUP.csv')
+results.to_csv('./output/NYC_output_all_years_additional_features_meanSUP.csv')
 
 

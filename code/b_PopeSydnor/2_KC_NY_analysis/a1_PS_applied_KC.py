@@ -7,13 +7,12 @@ import platform
 import sklearn.cross_validation
 import matplotlib.pyplot as plt
 
-execfile('../functions/python_libraries.py')
-execfile('../functions/simulation_functions.py')
+execfile('../../functions/python_libraries.py')
+execfile('../../functions/simulation_functions.py')
 
-
-# ## Import Kang et al. Dataset, Create Basic SAP/CP/SUP Features
-# Note, for now we're starting with original Kang et al. data and including a few other features (i.e. indicators for suspicious terms).
-dta = pd.read_csv('KangData_with_additional_features.csv')
+## This dataframe is instances_mergerd_seattle.csv from Kang et al. 2013 with additional
+## features created in KC.R.
+dta = pd.read_csv('../../../data/KangData_with_additional_features.csv')
 
 ## set -1 scores to 0
 dta.inspection_penalty_score[dta.inspection_penalty_score==-1]=0
@@ -156,7 +155,7 @@ for k, (train, test) in enumerate(k_fold):
 
     
     ## Restricted
-    model.fit(df_subset_train[SAP_cols],#[['SCORE_SAP','year_SAP']], 
+    model.fit(df_subset_train[SAP_cols],
                         df_subset_train.y)
     y_predict_restricted = model.predict(df_subset_test[SAP_cols])
     y_predict_train_restricted= model.predict(df_subset_train[SAP_cols])
@@ -252,5 +251,5 @@ results = pd.DataFrame({'Full_RF_RMSE_test': full_rmse,
                        'Restricted_OLS_RMSE_test': restricted_rmse_OLS,
                        'Restricted_OLS_RMSE_train': restricted_train_rmse_OLS})
 
-results.to_csv('Kang_output_additional_Features_meanSUP.csv')
+results.to_csv('./output/Kang_output_additional_Features_meanSUP.csv')
 
