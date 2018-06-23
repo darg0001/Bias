@@ -4,9 +4,9 @@
 This repository contains all the corresponding code to replicate tables and figures in ``When Algorithms Import Private Bias into Public Enforcement: The Promise and Limitations of Statistical De-Biasing Solutions''.
 
 ### Directions
-1. Save the raw Yelp data from Kang et al. <a href="http://www3.cs.stonybrook.edu/~junkang/hygiene/">[link]</a> to the data folder. 
+1. Save the raw Yelp data called 'instances_mergerd_seattle.csv' from Kang et al. 2013 <a href="http://www3.cs.stonybrook.edu/~junkang/hygiene/">[link]</a> to the data folder in this repo.
 
-2. Update global file-paths in 'functions/define_paths.py' to your local directory settings. [Add]
+2. Code organization assumes the working directory is the same as the code, so that data is read relative to a code's subfolder. 
 
 3. [Finish]
 
