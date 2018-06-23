@@ -5,8 +5,8 @@ from sklearn.metrics import mean_squared_error
 from math import sqrt
 from sklearn import tree
 from sklearn.grid_search import RandomizedSearchCV
-execfile('../functions/python_libraries.py')
-execfile('../functions/simulation_functions.py')
+execfile('../../functions/python_libraries.py')
+execfile('../../functions/simulation_functions.py')
 
 
 N = 10000
@@ -15,19 +15,19 @@ beta_2_CP_array = np.array([1])
 beta_3_SUP_array = np.array([1,5,10])
 
 ## amount of SAP overlap displacement
-displacement_array = np.array([1])#,3,4])
+displacement_array = np.array([1])
 
 
 ## SUP via Eqn 20.
 delta_0 = 0
-delta_CP_array = np.array([1])#, 0.58, 2.07])
+delta_CP_array = np.array([1])
 
-n_rep = 10  # set to 1k - testing only right now
+n_rep = 10
 binned = np.array(['unbinned_SAP'])
 
 
 ## replace Figure 4 by varying shift_sd
-shift_sd_array = np.array([1, 0.8, 0.6, 0.4, 0.2])
+shift_sd_array = np.array([1, 0.9 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2])
 
 for m in binned:
     if m == 'unbinned_SAP':

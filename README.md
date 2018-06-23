@@ -11,6 +11,8 @@ This repository contains all the corresponding code to replicate tables and figu
 3. [Finish]
 
 
+[be sure to explain how to run simulations. and how to modify -- not we had various bash scripts set-up so the set-up is dependant on how many iterations you want.]
+
 ### Authors
 * Kristen M. Altenburger, kaltenb@stanford.edu
 * Daniel E. Ho*, dho@law.stanford.edu

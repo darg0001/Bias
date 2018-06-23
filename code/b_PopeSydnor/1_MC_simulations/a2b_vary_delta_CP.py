@@ -5,8 +5,8 @@ from sklearn.metrics import mean_squared_error
 from math import sqrt
 from sklearn import tree
 from sklearn.grid_search import RandomizedSearchCV
-execfile('../functions/python_libraries.py')
-execfile('../functions/simulation_functions.py')
+execfile('../../functions/python_libraries.py')
+execfile('../../functions/simulation_functions.py')
 
 
 N = 10000
@@ -15,14 +15,14 @@ beta_2_CP_array = np.array([1])
 beta_3_SUP_array = np.array([1,5,10])
 
 ## amount of SAP overlap displacement
-displacement_array = np.array([0,1])#,3,4])
+displacement_array = np.array([0,1])
 
 
 ## SUP via Eqn 20.
 delta_0 = 0
-delta_CP_array = np.array([0, 0.5, 1, 1.5, 2])#, 0.58, 2.07])
+delta_CP_array = np.array([0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2])
 
-n_rep = 10 # set to 1k - testing only right now
+n_rep = 10
 binned = np.array(['unbinned_SAP'])
 
 
@@ -105,14 +105,6 @@ for m in binned:
                                     ### OLS
 
                                     ## FULL APPROACH
-                                    #fit on full/report on full
-        #                            (MSE_full, predict_full, b0_full, coef_full) =report_OLS_results(model=linear_model.LinearRegression(),
-        #                                                                                             method="Full",
-        #                                                                                             SAP_features=SAP_cols,
-        #                                                                                             SUP_features=['SUP'],
-        #                                                                                             CP_features=['CP'],
-        #                                                                                             outcome=['y'],
-        #                                                                                             data = df)
                                     #fit on train/report on train
                                     (MSE_full_train, predict_full_train, b0_full_train, coef_full_train) =report_OLS_results_train_test(model=linear_model.LinearRegression(),
                                                                                                          method="Full",
@@ -135,14 +127,6 @@ for m in binned:
 
 
                                     ## PROPOSED APPROACH
-                                    #fit on full/report on full
-        #                            (MSE_prop, predict_prop, b0_prop, coef_prop) =report_OLS_results(model=linear_model.LinearRegression(),
-        #                                                                                             method="Proposed",
-        #                                                                                             SAP_features=SAP_cols,
-        #                                                                                             SUP_features=['SUP'],
-        #                                                                                             CP_features=['CP'],
-        #                                                                                             outcome=['y'],
-        #                                                                                             data = df)
                                     (MSE_prop_test, predict_prop_test, b0_prop_test, coef_prop_test) =report_OLS_results_train_test(model=linear_model.LinearRegression(),
                                                                                                      method="Proposed",
                                                                                                      SAP_features=SAP_cols,
@@ -180,17 +164,10 @@ for m in binned:
                                                                                                                                 outcome=['y'],
                                                                                                                                 data_train = df_train,
                                                                                                                                 data_test = df_test)
-
-                                    #rmse_full.append(MSE_full)
                                     rmse_full_train.append(MSE_full_train)
                                     rmse_full_test.append(MSE_full_test)
-
-                                    #rmse_prop.append(MSE_prop)
                                     rmse_prop_train.append(MSE_prop_train)
                                     rmse_prop_test.append(MSE_prop_test)
-
-                                    #rmse_common.append(MSE_common)
-                                    #rmse_restricted.append(MSE_restrict)
                                     rmse_restricted_train.append(MSE_restrict_train)
                                     rmse_restricted_test.append(MSE_restrict_test)
 
@@ -203,7 +180,6 @@ for m in binned:
 
                                     ## Full
                                     clf = sklearn.ensemble.RandomForestRegressor()
-                                    #max_depth = [2, 5, 10]
                                     max_depth = [5, 10]
                                     max_depth.append(None)
                                     min_samples_leaf = [10, 20, 50]
@@ -220,11 +196,6 @@ for m in binned:
                                                         param_grid = random_grid_full,
                                                         cv = 3, verbose=0,
                                                         n_jobs = 2)
-
-    #                                clf_common = GridSearchCV(estimator = clf,
-    #                                                        param_grid = random_grid,
-    #                                                        cv = 3, verbose=0,
-    #                                                        n_jobs = -1)
 
                                     random_grid_restricted = {'max_features': [None],
                                         'max_depth': max_depth,
@@ -255,12 +226,6 @@ for m in binned:
                                     rmse_restricted_DT_test.append(sqrt(mean_squared_error(df_test.y,
                                                                 clf_restricted.predict(df_test[SAP_cols]))))
                                                        
-                                    ## Common
-                                    #clf_common.fit(df[sum([SAP_cols, ['CP'],], [])],
-                                    #                                                   df.y)
-
-
-
                                     ## Proposed
                                     p = np.mean(df_train.SUP==1)
                                     n_SUP1 = np.int(np.round(p * 1000))
@@ -299,11 +264,9 @@ for m in binned:
             #print str(k)
         df_results = pd.DataFrame({'RMSE_Full_OLS_train': rmse_full_train,
                                       'RMSE_Proposed_OLS_train':rmse_prop_train,
-                                  #'RMSE_Common_OLS':rmse_common,
                                       'RMSE_Restricted_OLS_train':rmse_restricted_train,
                                   'RMSE_Full_OLS_test': rmse_full_test,
                                   'RMSE_Proposed_OLS_test':rmse_prop_test,
-                                  #'RMSE_Common_OLS':rmse_common,
                                   'RMSE_Restricted_OLS_test':rmse_restricted_test,
                                       'RMSE_Full_DT_train': rmse_full_DT_train,
                                       'RMSE_Proposed_DT_train':rmse_prop_DT_train,
@@ -317,6 +280,5 @@ for m in binned:
                                       'Beta1_SAP': beta1_SAP_record,
                                       'Beta2_CP': beta_2_CP_record,
                                       'Beta3_SUP': beta_3_SUP_record})
-            #print len(df_results)
         df_results.to_excel(writer, index=False, sheet_name=str(k))
 writer.save()
