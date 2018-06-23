@@ -8,3 +8,8 @@ This repository contains all the corresponding code to replicate tables and figu
 1. Update global file-paths in 'functions/define_paths.py' to your local directory settings. [Add]
 
 2. [Finish]
+
+
+### Authors
+* Kristen M. Altenburger, kaltenb@stanford.edu
+* Daniel E. Ho, dho@law.stanford.edu
