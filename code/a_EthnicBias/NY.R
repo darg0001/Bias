@@ -10,7 +10,7 @@ library(xtable)
 library(lfe)
 
 ## Read data
-dta <- fread("NYData.csv")
+dta <- fread("../data/NYData.csv")
 
 
 ## Descriptive statistics
