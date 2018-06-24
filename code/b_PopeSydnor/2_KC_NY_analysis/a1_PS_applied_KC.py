@@ -47,7 +47,7 @@ CP_cols = [s for s in np.array(kc_df_subset.columns) if "CP" in s]
 
 
 
-k_fold = sklearn.cross_validation.ShuffleSplit(len(kc_df_subset.y), n_iter=1,#200,
+k_fold = sklearn.cross_validation.ShuffleSplit(len(kc_df_subset.y), n_iter=200,
                                                          test_size=0.2)
 
 ## RF Results
