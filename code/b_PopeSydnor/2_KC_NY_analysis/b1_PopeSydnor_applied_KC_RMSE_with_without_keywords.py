@@ -7,8 +7,8 @@ import platform
 import sklearn.cross_validation
 import matplotlib.pyplot as plt
 
-execfile('../functions/python_libraries.py')
-execfile('../functions/simulation_functions.py')
+execfile('../../functions/python_libraries.py')
+execfile('../../functions/simulation_functions.py')
 
 
 ## This dataframe is instances_mergerd_seattle.csv from Kang et al. 2013 with additional
