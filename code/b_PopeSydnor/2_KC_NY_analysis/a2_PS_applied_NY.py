@@ -249,5 +249,4 @@ results = pd.DataFrame({'Full_RF_RMSE_test': full_rmse,
                        'Restricted_OLS_RMSE_train': restricted_train_rmse_OLS})
 
 results.to_csv('./output/NYC_output_all_years_additional_features_meanSUP.csv')
-
-
+## note that we split this script so to run 50 iterations 4x

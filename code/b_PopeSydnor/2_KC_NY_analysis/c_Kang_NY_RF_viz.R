@@ -30,7 +30,7 @@ ny_df$restricted_minus_proposed_TEST <- ny_df$Restricted_RF_RMSE_test - ny_df$Pr
 ny_df$restricted_minus_proposed_TEST_OLS <- ny_df$Restricted_OLS_RMSE_test - ny_df$Proposed_OLS_RMSE_test
 
 
-pdf("Kang_NY_Proposed_v_restricted.pdf", height=2.5,width=6)
+pdf("./figs/Kang_NY_Proposed_v_restricted.pdf", height=2.5,width=6)
 layout(matrix(c(2,1,3,3), 2, 2, byrow = TRUE), widths = c(2,2), heights = c(1,0.25))
 
 par(mar=c(1.2,3,1,1),mgp=c(1.5,0.5,0),tcl=-0.3)
@@ -64,69 +64,47 @@ hist(ny_df$restricted_minus_proposed_TEST, #pch = 16,
      main =  'NYC')
 axis(1, at=seq(-0.09, 0.08, by = 0.02),  lwd.ticks=1)
 abline(v=0,  lty=5)
-
-
 plot(0,0, bty = 'n', xaxt='n', yaxt='n', ylim = c(1,2), xlim = c(1,2), ylab = '', xlab = '')
 text(1.5,1.5,'Predictive Degradation', cex=1.1)
-
-
 dev.off()
 
 
 
 
 
-
-
-
-
-
-
-
-
-pdf("Kang_NY_Proposed_v_restricted_previous.pdf", height=4.4,width=5)
-#par(mfrow=c(2,1),mar=c(3,3,2,1),mgp=c(1.5,0.5,0),tcl=-0.3)
-
-layout(matrix(c(1,2), 2, 1, byrow = TRUE), widths = c(1), heights = c(1,1.25))
-par(mar=c(1.5,3,1,1),mgp=c(1.5,0.5,0),tcl=-0.3)
-hist(kang_df$restricted_minus_proposed_TEST, #pch = 16, 
-     #xlim = c(1.804,1.835), 
-     col = rgb(1,0,0,0.5),
-    breaks=seq(-0.08, 0.08, length.out=30),
-     #cex=1.5,
-     xaxt='n',
-     xlim = c(-0.08, 0.08), 
-     xlab = '', 
-    #ylab = '(restricted-RMSE - proposed-RMSE)',
-     freq = F, border = 'white',
-     main = 'King County')
-abline(v=0,  lty=5)
-axis(1, at=seq(-0.08, 0.08, by = 0.02),  lwd.ticks=1)
-#axis(1, at=seq(0 , 2000, by=200), lwd=0, lwd.ticks=1)
-
-par(mar=c(3,3,1.5,1),mgp=c(1.5,0.5,0),tcl=-0.3)
-hist(ny_df$restricted_minus_proposed_TEST, #pch = 16, 
-      #xlim = c(1.804,1.835), 
-      col =rgb(0,0,1, 0.5),
-     breaks=seq(-0.03, 0.03, length.out=15),
-     #cex=1.5,
-     xlim = c(-0.08, 0.08), 
-     xaxt = 'n',
-     # xlab = '',  
-      xlab = 'Proposed Predictive Degradation',
-      freq = F, border = 'white', add =F,
-      main =  'NYC')
-axis(1, at=seq(-0.08, 0.08, by = 0.02),  lwd.ticks=1)
-abline(v=0,  lty=5)
-dev.off()
-
-
-
-
-
-pdf("Kang_NY_RF_v_OLS.pdf", height=5,width=5)
+pdf("./figs/Kang_NY_RF_v_OLS.pdf", height=5,width=5)
 cex_pt <- 0.5
 par(mfrow=c(2,2),mar=c(3,3,2,1),mgp=c(1.5,0.5,0),tcl=-0.3)
+
+
+## NYC
+par(mar=c(3,3,2,1),mgp=c(1.5,0.5,0),tcl=-0.3)
+
+plot(ny_df$Proposed_OLS_RMSE_test ,
+     ny_df$Proposed_RF_RMSE_test ,
+     xlab = 'Linear',
+     ylab = 'RF',
+     main = 'Proposed (New York)',
+     pch =  20,
+     cex = cex_pt,
+     col=rgb(0,0,0,0.4),
+     xlim = c(10.8,12.2),
+     ylim = c(10.8,12.2))
+abline(a=0,b=1)
+par(mar=c(3,2.5,2,1),mgp=c(1.5,0.5,0),tcl=-0.3)
+
+plot(ny_df$Restricted_OLS_RMSE_test ,
+     ny_df$Restricted_RF_RMSE_test ,
+     xlab = 'Linear',
+     ylab = 'RF',
+     main = 'Restricted (New York)',
+     cex = cex_pt,
+     pch =  20,
+     col=rgb(0,0,0,0.4),
+     xlim = c(10.8,12.2),
+     ylim = c(10.8,12.2))
+abline(a=0,b=1)
+
 
 plot(kang_df$Proposed_OLS_RMSE_test ,
      kang_df$Proposed_RF_RMSE_test ,
@@ -154,97 +132,6 @@ plot(kang_df$Restricted_OLS_RMSE_test ,
      ylim = c(13.25,15.5))
 abline(a=0,b=1)
 
-## NYC
-par(mar=c(3,3,2,1),mgp=c(1.5,0.5,0),tcl=-0.3)
-
-plot(ny_df$Proposed_OLS_RMSE_test ,
-     ny_df$Proposed_RF_RMSE_test ,
-     xlab = 'Linear',
-     ylab = 'RF',
-     main = 'Proposed (NY)',
-     pch =  20,
-     cex = cex_pt,
-     col=rgb(0,0,0,0.4),
-     xlim = c(10.8,12.2),
-     ylim = c(10.8,12.2))
-abline(a=0,b=1)
-par(mar=c(3,2.5,2,1),mgp=c(1.5,0.5,0),tcl=-0.3)
-
-plot(ny_df$Restricted_OLS_RMSE_test ,
-     ny_df$Restricted_RF_RMSE_test ,
-     xlab = 'Linear',
-     ylab = 'RF',
-     main = 'Restricted (NY)',
-     cex = cex_pt,
-     pch =  20,
-     col=rgb(0,0,0,0.4),
-     xlim = c(10.8,12.2),
-     ylim = c(10.8,12.2))
-abline(a=0,b=1)
 dev.off()
 
 
-
-#text( -0.05,4, '(restricted-RMSE - proposed-RMSE)')
-
-#points(ny_df$X,
-#       cex=1.5,
-#       ny_df$restricted_minus_proposed_TEST, pch = 16,
-#       col =rgb(1,0,0, 0.5))
-#abline(h=0, lty=5)
-#axis(1, at=c(1.81, 1.83), labels=x)
-#text(1.805, 0.1, 'Train',col = 'red')#rgb(0,0,0,0.8))
-#text(1.805, 0.08, 'Test',col ='black')#rgb(1,0,0, 0.4))
-
-
-
-#pdf("Kang_NY_Proposed_v_restricted.pdf", height=4,width=5)
-#par(mfrow=c(1,1),mar=c(3,3,2,1),mgp=c(1.5,0.5,0),tcl=-0.3)
-
-#plot(kang_df$X, 
-#     kang_df$restricted_minus_proposed_TEST, pch = 16, 
-#     xlim = c(1.804,1.835), col = rgb(1,0,0,0.5),
-#     cex=1.5,
-#     ylim = c(-0.15, 0.15), xlab = '', xaxt='n', ylab = '(restricted-RMSE - proposed-RMSE)')
-
-
-#points(ny_df$X,
-#       cex=1.5,
-#       ny_df$restricted_minus_proposed_TEST, pch = 16,
-#       col =rgb(1,0,0, 0.5))
-#abline(h=0, lty=5)
-#axis(1, at=c(1.81, 1.83), labels=x)
-#text(1.805, 0.1, 'Train',col = 'red')#rgb(0,0,0,0.8))
-#text(1.805, 0.08, 'Test',col ='black')#rgb(1,0,0, 0.4))
-#dev.off()
-
-
-
-# Old
-# pdf("Kang_NY_Proposed_v_restricted.pdf", height=4,width=5)
-# par(mfrow=c(1,1),mar=c(3,3,2,1),mgp=c(1.5,0.5,0),tcl=-0.3)
-# 
-# plot(kang_df$X, 
-#      kang_df$restricted_minus_proposed_TRAIN, pch = 16, 
-#      xlim = c(1.8,1.84), col = rgb(0,0,0,0.8),
-#      cex=1.2,
-#      ylim = c(-0.15, 0.15), xlab = '', xaxt='n', ylab = '(restricted-RMSE - proposed-RMSE)')
-# plot(kang_df$X+0.0011,
-#        cex=1.2,
-#        
-#        kang_df$restricted_minus_proposed_TEST, pch = 16, 
-#        col =rgb(1,0,0, 0.4))
-# points(ny_df$X,
-#        cex=1.2,
-#        
-#        ny_df$restricted_minus_proposed_TRAIN, pch = 16, col = rgb(0,0,0,0.8))
-# points(ny_df$X+0.0011,
-#        cex=1.2,
-#        
-#        ny_df$restricted_minus_proposed_TEST, pch = 16,
-#        col =rgb(1,0,0, 0.4))
-# abline(h=0, lty=5)
-# axis(1, at=c(1.81, 1.83), labels=x)
-# text(1.805, 0.1, 'Train',col = 'red')#rgb(0,0,0,0.8))
-# text(1.805, 0.08, 'Test',col ='black')#rgb(1,0,0, 0.4))
-# dev.off()
