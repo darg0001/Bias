@@ -12,18 +12,14 @@ def predict_fitted_model_proposed1(model, dt_tmp, cols, cols_full, outcome):
     dt = dt_tmp.copy()
     dt.drop('SUP', inplace=True, axis = 1)
     dt.rename(columns={'proposed_SUP1':'SUP'}, inplace=True)
-    #dt.rename(columns={'proposed_SUP0':'SUP'}, inplace=True)
     y_predict = model.predict(dt[cols_full])
     return(y_predict)
 
 
 def predict_fitted_model_proposed0(model, dt_tmp, cols, cols_full, outcome):
     dt = dt_tmp.copy()
-    #print dt.head()
     dt.drop('SUP', inplace=True, axis = 1)
     dt.rename(columns={'proposed_SUP0':'SUP'}, inplace=True)
-    #print dt.head()
-    #dt.rename(columns={'proposed_SUP0':'SUP'}, inplace=True)
     y_predict = model.predict(dt[cols_full])
     return(y_predict)
 
@@ -67,7 +63,6 @@ def DT_hyperparameter_given_grid(method, SAP_features, SUP_features, CP_features
                                    n_iter = 10, cv = 3, verbose=0,
                                    random_state=42, n_jobs = -1)
 
-    #model_tmp =sklearn.tree.DecisionTreeRegressor(random_state = 42) 
     if (method =="Full") | (method == "Proposed"):
         model_tmp.fit(data[sum([SAP_features, CP_features, SUP_features], [])],
                                                      data[outcome])
@@ -95,7 +90,7 @@ def report_DT_RF_results(model, method, SAP_features, SUP_features, SUP_proposed
     
     if method=="Restricted":
         y_predict = model.predict(data[SAP_features])
-    return([sqrt(mean_squared_error(data[outcome], y_predict)),y_predict]) ## add feature importance later?
+    return([sqrt(mean_squared_error(data[outcome], y_predict)),y_predict])
 
 
 
@@ -148,8 +143,6 @@ def generate_proposed_data_setup_train_test(data_train, data_test, SUP_features,
     if exact:
         n_SUP1 = np.sum(data_test[SUP_features]==1)
         n_SUP0 = np.sum(data_test[SUP_features]==0)
-        #print n_SUP1
-        #print n_SUP0
         N = n_SUP1 + n_SUP0
         n_SUP1 = np.round(np.int(n_SUP1*num_synthetic/N))
         n_SUP0 = num_synthetic - n_SUP1
@@ -182,13 +175,9 @@ def report_OLS_results(model, method, SAP_features, SUP_features, CP_features, o
         ## Fit Full Model
         model.fit(data[sum([SAP_features, CP_features, SUP_features], [])],
                   data[outcome])
-        #print model.coef_
-        #print model.predict(data[sum([SAP_features, CP_features, SUP_features], [])])
         ## Apply Proposed Approach
         data_proposed = data.copy()
         data_proposed[SUP_features] = np.array(np.mean(data_proposed[SUP_features]))[0]#np.mean(data_proposed[SUP_features])
-        #print np.array(np.mean(data_proposed[SUP_features]))[0]
-        #print data_proposed.head()
         y_predict = model.predict(data_proposed[sum([SAP_features, CP_features, SUP_features], [])])
         #print y_predict
     ## Fit with SAP+CP-only
@@ -215,15 +204,10 @@ def report_OLS_results_train_test(model, method, SAP_features, SUP_features, CP_
         ## Fit Full Model
         model.fit(data_train[sum([SAP_features, CP_features, SUP_features], [])],
                   data_train[outcome])
-        #print model.coef_
-        #print model.predict(data[sum([SAP_features, CP_features, SUP_features], [])])
         ## Apply Proposed Approach
         data_proposed = data_test.copy()
         data_proposed[SUP_features] = np.array(np.mean(data_proposed[SUP_features]))[0]#np.mean(data_proposed[SUP_features])
-        #print np.array(np.mean(data_proposed[SUP_features]))[0]
-        #print data_proposed.head()
         y_predict = model.predict(data_proposed[sum([SAP_features, CP_features, SUP_features], [])])
-        #print y_predict
     ## Fit with SAP+CP-only
     if method=="Common":
         model.fit(data_train[sum([SAP_features, CP_features], [])],

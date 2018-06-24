@@ -12,8 +12,8 @@ execfile('../../functions/simulation_functions.py')
 
 ## This dataframe is instances_mergerd_seattle.csv from Kang et al. 2013 with additional
 ## features created in KC.R.
-#dta = pd.read_csv('../../../data/KangData_with_additional_features.csv')
-dta = pd.read_csv('/Users/kristen/Desktop/KangData_with_additional_features.csv')
+dta = pd.read_csv('../../../data/KangData_with_additional_features.csv')
+#dta = pd.read_csv('/Users/kristen/Desktop/KangData_with_additional_features.csv')
 
 
 ## set -1 scores to 0

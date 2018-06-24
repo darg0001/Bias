@@ -18,8 +18,8 @@ library(xtable)
 
 
 ## Read in data 
-dta <- fread("../../../../../KangData/instances_mergerd_seattle.csv", verbose=F)
-#dta <- fread("../data/instances_mergerd_seattle.csv", verbose=F)
+#dta <- fread("../../../../../KangData/instances_mergerd_seattle.csv", verbose=F)
+dta <- fread("../data/instances_mergerd_seattle.csv", verbose=F)
 
 
 ## Augment year
@@ -85,8 +85,8 @@ dta <- data.frame(dta, asian = asian, ethnic = ethnic)
 
 
 ## Used for Applying P&S because we want covariates and Asian/Non-Asian labels
-#write.csv(dta,'../data/KangData_with_additional_features.csv', row.names = FALSE)
-write.csv(dta,'~/Desktop/KangData_with_additional_features.csv', row.names = FALSE)
+write.csv(dta,'../data/KangData_with_additional_features.csv', row.names = FALSE)
+#write.csv(dta,'~/Desktop/KangData_with_additional_features.csv', row.names = FALSE)
 
 ##=========================================
 ##  DESCRIPTIVE STATISTICS

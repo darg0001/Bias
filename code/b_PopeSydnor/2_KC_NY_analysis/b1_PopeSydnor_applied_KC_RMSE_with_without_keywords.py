@@ -82,7 +82,7 @@ for k, (train, test) in enumerate(k_fold):
     max_depth.append(None)
     min_samples_leaf = [5, 10, 20, 50, 100]
     min_samples_split = [2, 3, 4, 5, 10]
-    n_estimators = [50, 100, 150] #[10, 50, 100, 150, 200]
+    n_estimators = [50, 100, 150]
     max_features = ['auto', 0.25, 0.5, 0.75]
     random_grid = {'max_depth': max_depth,
                 'min_samples_leaf': min_samples_leaf,
@@ -130,7 +130,6 @@ for k, (train, test) in enumerate(k_fold):
     ## Full
     model.fit(df_subset_train[sum([SAP_cols, CP_cols, ['asian_SUP']], [])], 
                     df_subset_train.y)
-    #print model.best_params_
     y_predict_full = model.predict(df_subset_test[sum([SAP_cols, CP_cols, ['asian_SUP']], [])])
     full_rmse_OLS.append(sqrt(mean_squared_error(df_subset_test.y, y_predict_full)))
     
