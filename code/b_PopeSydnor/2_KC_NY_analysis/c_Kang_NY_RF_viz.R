@@ -15,8 +15,8 @@ kang_df <- rbind(kang_df1, kang_df2, kang_df3, kang_df4)
 kang_df$restricted_minus_proposed_TEST <- kang_df$Restricted_RF_RMSE_test - kang_df$Proposed_RF_RMSE_test
 kang_df$restricted_minus_proposed_TEST_OLS <- kang_df$Restricted_OLS_RMSE_test - kang_df$Proposed_OLS_RMSE_test
 
-
-
+mean(kang_df$restricted_minus_proposed_TEST)
+#1] -0.0165316
 
 ## New York
 ny_df1 <- read.csv('./output/NYC_output_all_years_additional_features_meanSUP_1.csv')
@@ -28,6 +28,9 @@ ny_df <- rbind(ny_df1, ny_df2, ny_df3, ny_df4)
 ## Predictive Degradation
 ny_df$restricted_minus_proposed_TEST <- ny_df$Restricted_RF_RMSE_test - ny_df$Proposed_RF_RMSE_test
 ny_df$restricted_minus_proposed_TEST_OLS <- ny_df$Restricted_OLS_RMSE_test - ny_df$Proposed_OLS_RMSE_test
+
+mean(ny_df$restricted_minus_proposed_TEST)
+#[1] 0.0029749
 
 
 pdf("./figs/Kang_NY_Proposed_v_restricted.pdf", height=2.5,width=6)
