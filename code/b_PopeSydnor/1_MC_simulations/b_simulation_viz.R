@@ -17,10 +17,7 @@ read_excel_allsheets <- function(filename, tibble = FALSE) {
 
 
 setwd("./output/")
-
-## set universal labels -- will be easy to modify later
 y_axis_label <- 'Predictive Degradation'
-
 
 
 ##
@@ -35,7 +32,6 @@ text(1.5,1.5,'Effect of SAP Displacement', cex=1.4)
 file.list <- list.files(pattern='*.xlsx')
 file.list <- file.list[grep('a1b_PAPER_*',file.list)]
 df.list <- lapply(file.list, read_excel_allsheets)
-#df.list <- df.list[1:16]
 cex_size = 1.2
 
 num_pts1 = 0
