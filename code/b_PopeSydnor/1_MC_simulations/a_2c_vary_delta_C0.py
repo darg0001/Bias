@@ -22,7 +22,7 @@ displacement_array = np.array([0,1])
 delta_0_array = np.array([-2, -1.5, -1, -0.5, 0, 0.5, 1, 1.5, 2])
 delta_CP_array = np.array([0, 1])#, 0.58, 2.07])
 
-n_rep = 10 
+n_rep = 100
 binned = np.array(['unbinned_SAP'])
 
 
