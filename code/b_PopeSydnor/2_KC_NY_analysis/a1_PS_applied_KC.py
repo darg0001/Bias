@@ -12,7 +12,9 @@ execfile('../../functions/simulation_functions.py')
 
 ## This dataframe is instances_mergerd_seattle.csv from Kang et al. 2013 with additional
 ## features created in KC.R.
-dta = pd.read_csv('../../../data/KangData_with_additional_features.csv')
+#dta = pd.read_csv('../../../data/KangData_with_additional_features.csv')
+dta = pd.read_csv('/Users/kristen/Desktop/KangData_with_additional_features.csv')
+
 
 ## set -1 scores to 0
 dta.inspection_penalty_score[dta.inspection_penalty_score==-1]=0
@@ -45,7 +47,7 @@ CP_cols = [s for s in np.array(kc_df_subset.columns) if "CP" in s]
 
 
 
-k_fold = sklearn.cross_validation.ShuffleSplit(len(kc_df_subset.y), n_iter=200,
+k_fold = sklearn.cross_validation.ShuffleSplit(len(kc_df_subset.y), n_iter=1,#200,
                                                          test_size=0.2)
 
 ## RF Results
