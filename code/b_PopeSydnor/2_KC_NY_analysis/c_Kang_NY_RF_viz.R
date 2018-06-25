@@ -3,6 +3,7 @@
 #Plot NY vs. KC results for Predictive Degradation and comparing OLS vs. RF (Restricted/Proposed Approaches)
 rm(list=ls())
 
+#setwd('~/Dropbox/YelpBias/kristen_sandbox/final_paper_code/JITE_git_upload/Bias/code/b_PopeSydnor/2_KC_NY_analysis/')
 
 ## King County
 kang_df1 <- read.csv('./output/Kang_output_additional_Features_meanSUP_1.csv')
@@ -64,7 +65,7 @@ hist(ny_df$restricted_minus_proposed_TEST, #pch = 16,
      # xlab = '',  
      xlab = '',##'Proposed Predictive Degradation',
      freq = F, border = 'white', add =F,
-     main =  'NYC')
+     main =  'New York')
 axis(1, at=seq(-0.09, 0.08, by = 0.02),  lwd.ticks=1)
 abline(v=0,  lty=5)
 plot(0,0, bty = 'n', xaxt='n', yaxt='n', ylim = c(1,2), xlim = c(1,2), ylab = '', xlab = '')
