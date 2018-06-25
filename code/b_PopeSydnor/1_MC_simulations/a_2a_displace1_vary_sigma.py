@@ -106,13 +106,7 @@ for m in binned:
 
                                     ## FULL APPROACH
                                     #fit on full/report on full
-        #                            (MSE_full, predict_full, b0_full, coef_full) =report_OLS_results(model=linear_model.LinearRegression(),
-        #                                                                                             method="Full",
-        #                                                                                             SAP_features=SAP_cols,
-        #                                                                                             SUP_features=['SUP'],
-        #                                                                                             CP_features=['CP'],
-        #                                                                                             outcome=['y'],
-        #                                                                                             data = df)
+
                                     #fit on train/report on train
                                     (MSE_full_train, predict_full_train, b0_full_train, coef_full_train) =report_OLS_results_train_test(model=linear_model.LinearRegression(),
                                                                                                          method="Full",
@@ -135,14 +129,6 @@ for m in binned:
 
 
                                     ## PROPOSED APPROACH
-                                    #fit on full/report on full
-        #                            (MSE_prop, predict_prop, b0_prop, coef_prop) =report_OLS_results(model=linear_model.LinearRegression(),
-        #                                                                                             method="Proposed",
-        #                                                                                             SAP_features=SAP_cols,
-        #                                                                                             SUP_features=['SUP'],
-        #                                                                                             CP_features=['CP'],
-        #                                                                                             outcome=['y'],
-        #                                                                                             data = df)
                                     (MSE_prop_test, predict_prop_test, b0_prop_test, coef_prop_test) =report_OLS_results_train_test(model=linear_model.LinearRegression(),
                                                                                                      method="Proposed",
                                                                                                      SAP_features=SAP_cols,
@@ -160,42 +146,6 @@ for m in binned:
                                                                                                                 data_train = df_train,
                                                                                                                 data_test = df_train)
 
-
-                                    ## COMMON
-                                    #fit on full/report on full
-        #                            (MSE_common, predict_common, b0_common, coef_common) =report_OLS_results(model=linear_model.LinearRegression(),
-        #                                                                                                     method="Common",
-        #                                                                                                     SAP_features=SAP_cols,
-        #                                                                                                     SUP_features=['SUP'],
-        #                                                                                                     CP_features=['CP'],
-        #                                                                                                     outcome=['y'],
-        #                                                                                                     data = df)
-        #                            (MSE_common_test, predict_common_test, b0_common_test, coef_common_test) =report_OLS_results_train_test(model=linear_model.LinearRegression(),
-        #                                                                                                     method="Common",
-        #                                                                                                     SAP_features=SAP_cols,
-        #                                                                                                     SUP_features=['SUP'],
-        #                                                                                                     CP_features=['CP'],
-        #                                                                                                     outcome=['y'],
-        #                                                                                                    data_train = df_train,
-        #                                                                                                    data_test = df_test)
-        #                            (MSE_common_train, predict_common_train, b0_common_train, coef_common_train) =report_OLS_results_train_test(model=linear_model.LinearRegression(),
-        #                                                                                                     method="Common",
-        #                                                                                                     SAP_features=SAP_cols,
-        #                                                                                                     SUP_features=['SUP'],
-        #                                                                                                     CP_features=['CP'],
-        #                                                                                                     outcome=['y'],
-        #                                                                                                    data_train = df_train,
-        #                                                                                                    data_test = df_train)
-
-
-                                    #fit on full/report on full
-        #                            (MSE_restrict, predict_restrict, b0_restrict, coef_restrict) =report_OLS_results(model=linear_model.LinearRegression(),
-        #                                                                                                             method="Restricted",
-        #                                                                                                             SAP_features=SAP_cols,
-        #                                                                                                             SUP_features=['SUP'],
-        #                                                                                                             CP_features=['CP'],
-        #                                                                                                             outcome=['y'],
-        #                                                                                                             data = df)
                                     (MSE_restrict_train, predict_restrict_train, b0_restrict_train, coef_restrict_train) =report_OLS_results_train_test(model=linear_model.LinearRegression(),
                                                                                                                          method="Restricted",
                                                                                                                          SAP_features=SAP_cols,
@@ -213,19 +163,12 @@ for m in binned:
                                                                                                                                 data_train = df_train,
                                                                                                                                 data_test = df_test)
 
-                                    #rmse_full.append(MSE_full)
                                     rmse_full_train.append(MSE_full_train)
                                     rmse_full_test.append(MSE_full_test)
-
-                                    #rmse_prop.append(MSE_prop)
                                     rmse_prop_train.append(MSE_prop_train)
                                     rmse_prop_test.append(MSE_prop_test)
-
-                                    #rmse_common.append(MSE_common)
-                                    #rmse_restricted.append(MSE_restrict)
                                     rmse_restricted_train.append(MSE_restrict_train)
                                     rmse_restricted_test.append(MSE_restrict_test)
-
                                     displace_record.append(displacement)
                                     delta_CP_record.append(delta_CP)
                                     beta1_SAP_record.append(beta_1_SAP)
@@ -235,7 +178,6 @@ for m in binned:
 
                                     ## Full
                                     clf = sklearn.ensemble.RandomForestRegressor()
-                                    #max_depth = [2, 5, 10]
                                     max_depth = [5, 10]
                                     max_depth.append(None)
                                     min_samples_leaf = [10, 20, 50]
@@ -252,11 +194,6 @@ for m in binned:
                                                         param_grid = random_grid_full,
                                                         cv = 3, verbose=0,
                                                         n_jobs = 2)
-
-    #                                clf_common = GridSearchCV(estimator = clf,
-    #                                                        param_grid = random_grid,
-    #                                                        cv = 3, verbose=0,
-    #                                                        n_jobs = -1)
 
                                     random_grid_restricted = {'max_features': [None],
                                         'max_depth': max_depth,
@@ -277,8 +214,6 @@ for m in binned:
                                     rmse_full_DT_test.append(sqrt(mean_squared_error(df_test.y, y_predict_test)))
 
 
-
-
                                     ## Restricted
                                     clf_restricted.fit(df_train[SAP_cols],
                                                        df_train.y)
@@ -286,11 +221,6 @@ for m in binned:
                                                           clf_restricted.predict(df_train[SAP_cols]))))
                                     rmse_restricted_DT_test.append(sqrt(mean_squared_error(df_test.y,
                                                                 clf_restricted.predict(df_test[SAP_cols]))))
-                                                       
-                                    ## Common
-                                    #clf_common.fit(df[sum([SAP_cols, ['CP'],], [])],
-                                    #                                                   df.y)
-
 
 
                                     ## Proposed
@@ -331,11 +261,9 @@ for m in binned:
             #print str(k)
         df_results = pd.DataFrame({'RMSE_Full_OLS_train': rmse_full_train,
                                       'RMSE_Proposed_OLS_train':rmse_prop_train,
-                                  #'RMSE_Common_OLS':rmse_common,
                                       'RMSE_Restricted_OLS_train':rmse_restricted_train,
                                   'RMSE_Full_OLS_test': rmse_full_test,
                                   'RMSE_Proposed_OLS_test':rmse_prop_test,
-                                  #'RMSE_Common_OLS':rmse_common,
                                   'RMSE_Restricted_OLS_test':rmse_restricted_test,
                                       'RMSE_Full_DT_train': rmse_full_DT_train,
                                       'RMSE_Proposed_DT_train':rmse_prop_DT_train,
