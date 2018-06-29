@@ -18,8 +18,8 @@ library(xtable)
 
 
 ## Read in data 
-dta <- fread("../../../../../../KangData/instances_mergerd_seattle.csv", verbose=F)
-#dta <- fread("../../data/instances_mergerd_seattle.csv", verbose=F)
+#dta <- fread("../../../../../../KangData/instances_mergerd_seattle.csv", verbose=F)
+dta <- fread("../../data/instances_mergerd_seattle.csv", verbose=F)
 
 
 ## Augment year
