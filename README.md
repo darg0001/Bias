@@ -19,4 +19,4 @@ All code was written and tested for Python 2.7.12
 * Kristen M. Altenburger, kaltenb@stanford.edu
 * Daniel E. Ho*, dho@law.stanford.edu
 
-* corresponding author
+[ * corresponding author]
