@@ -8,5 +8,6 @@ The set of code 'a_*' corresponds with different simulations settings we conside
 * delta_CP: varies amount of correlation between CP and SUP
 * n_rep: controls how many iterations of random 80-20 splits to implement. (Note for our analysis, we split this file into smaller files instead of running one script of 100 iterations.)
 
+Note that 'b_simulation_figs.R' can only be run after all the simulation code has run and has created the .csv files.
 
 
