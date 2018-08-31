@@ -163,15 +163,17 @@ my.ylim <- range(dta$y)
 my.pch <- (3*dta$x.sup) + 16*(1-dta$x.sup)
 
 
+cairo_ps("./figs/fig3.eps",family = 'Times', height=2,width=8,
+         fallback_resolution = 600)
 par(mfrow=c(1,4))
 par(mar=c(3,3,2,1), mgp=c(1.5,0.5,0), tcl=-0.3)
 plot(dta$x.sap, jitter(dta$y), col=my.col, pch=my.pch,
-     xlim=my.xlim, ylim=my.ylim, main="Data", xlab="SAP", ylab="y")
+     xlim=my.xlim, ylim=my.ylim, main="a) Data", xlab="SAP", ylab=expression(italic("y")),  font.main = 1)#"y")
 text(0,7,"SUP=1",col="red")
 text(-2,0,"SUP=0",col="blue")
 
 plot(dta$x.sap, jitter(dta$y), col=my.col.light, pch=my.pch,
-     xlim=my.xlim, ylim=my.ylim, main="Full", xlab="SAP", ylab="y")
+     xlim=my.xlim, ylim=my.ylim, main="b) Full", xlab="SAP", ylab=expression(italic("y")),  font.main = 1)#"y")
 step.plot(xx = dta[!my.train,"x.sap"], yy = lm1[[4]], sup = dta[!my.train,"x.sup"], type="l",
           col="darkgreen", lty=2, lwd=2)
 step.plot(xx = dta[!my.train,"x.sap"], yy = rp1[[4]], sup = dta[!my.train,"x.sup"],
@@ -181,7 +183,7 @@ text(-2.5,0,"Tree",col=rgb(1,0,1))
 
 
 plot(dta$x.sap, jitter(dta$y), col=my.col.light, pch=my.pch,
-     xlim=my.xlim, ylim=my.ylim, main="Marginalization", xlab="SAP", ylab="y")
+     xlim=my.xlim, ylim=my.ylim, main="c) Marginalization", xlab="SAP", ylab=expression(italic("y")),  font.main = 1)#"y")
 step.plot(xx = dta[!my.train,"x.sap"], yy = lm1[[5]], type="l",
           col="darkgreen", lty=2, lwd=2)
 step.plot(xx = dta[!my.train,"x.sap"], yy = rp1[[5]],
@@ -189,9 +191,9 @@ step.plot(xx = dta[!my.train,"x.sap"], yy = rp1[[5]],
 text(-1.5,4,"Extrapolation",col=rgb(1,0,1))
 
 plot(dta$x.sap, jitter(dta$y), col=my.col.light, pch=my.pch,
-     xlim=my.xlim, ylim=my.ylim, main="Restricted", xlab="SAP", ylab="y")
+     xlim=my.xlim, ylim=my.ylim, main="d) Restricted", xlab="SAP", ylab=expression(italic("y")),  font.main = 1)#"y")
 step.plot(xx = dta[!my.train,"x.sap"], yy = lm1[[6]], type="l",
           col="darkgreen", lty=2, lwd=2)
 step.plot(xx = dta[!my.train,"x.sap"], yy = rp1[[6]], 
           col=rgb(1,0,1,0.6), lwd=2)
-
+dev.off()

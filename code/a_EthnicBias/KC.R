@@ -9,6 +9,8 @@
 ## Clearing memory
 rm(list=ls())
 
+# note - assume working directory is current file path's directory
+#setwd('/Users/kristen/Dropbox/YelpBias/kristen_sandbox/final_paper_code/JITE_git_upload/Bias/code/a_EthnicBias/')
 
 ## Packages 
 library(data.table) #to read in larger datasets more effectively
@@ -176,14 +178,78 @@ names(store) <- c("mean.nonasian","mean.asian", "n.nonasian", "n.asian", "mid")
 
 
 
-## Plotting
-par(mar=c(3,3,2,1), mgp=c(1.5,0.5,0),tcl=-0.3)
+## Plotting as pdf
+pdf("../../figs/EthnicBias.pdf", height=4.5, width=6)
+par(mar=c(3,3,2,1), mgp=c(1.5,0.5,0),tcl=-0.3,family = 'Times')
 plot(store$mid, store[,1],type="n",ylim=c(0.035,0.15),xlim=c(0,35),
-     main="Inspection Score and Food Poisoning Review", xlab="Inspection score", ylab="Probability of term")
+     #main="Inspection Score and Food Poisoning Review", 
+     xlab="Inspection score", ylab="Probability of term")
 points(store$mid, store$mean.nonasian,cex=sqrt(store$n.nonasian/pi)*0.2,col=rgb(0,0,0,0.4),pch=16)
 points(store$mid, store$mean.asian,cex=sqrt(store$n.asian/pi)*0.2,col="black", pch=1)
 text(6, 0.11, "Asian",col="black")
 text(5, 0.05, "Non-Asian")
+dev.off()
+
+
+## Plotting as eps
+#postscript("../../figs/EthnicBias.eps")#, height=4.5, width=6)
+cairo_ps("../../figs/EthnicBias.eps",family = 'Times',height=4.5, width=6,
+    fallback_resolution = 600)
+par(mar=c(3,3,2,1), mgp=c(1.5,0.5,0),tcl=-0.3,family = 'Times')
+plot(store$mid, store[,1],type="n",ylim=c(0.035,0.15),xlim=c(0,35),
+     #main="Inspection Score and Food Poisoning Review", 
+     xlab="Inspection score", ylab="Probability of term")
+points(store$mid, store$mean.nonasian,cex=sqrt(store$n.nonasian/pi)*0.2,col=rgb(0,0,0,0.4),pch=16)
+points(store$mid, store$mean.asian,cex=sqrt(store$n.asian/pi)*0.2,col="black", pch=1)
+text(6, 0.11, "Asian",col="black")
+text(5, 0.05, "Non-Asian")
+dev.off()
+
+
+
+## ZIP specific effects
+threshold <- 100
+table.zip <- table(dta$zip_code, dta$asian)
+unique.zip <- row.names(table.zip)[table.zip[,1]>threshold & table.zip[,2]>threshold]
+table.zip <- table.zip[table.zip[,1]>threshold & table.zip[,2]>threshold,]
+n.zip <- length(unique.zip)
+betas <- matrix(NA, n.zip, 2)
+for(i in 1:n.zip){
+  lm.tmp <- glm(fbi ~ asian + inspection_average_prev_penalty_scores + as.factor(year),
+                family="binomial", data=dta[dta$zip_code==unique.zip[i],])
+  betas[i, 1:2] <- coef(summary(lm.tmp))[2,1:2]
+}
+prop.asian <- table.zip[,2]/apply(table.zip,1,sum)
+
+cairo_ps('../../figs/ByZIP.eps', height=4,width=5,family = 'Times')
+par(mar=c(3,3,2,1),mgp=c(1.5,0.5,0),tcl=-0.3)
+plot(prop.asian, betas[,1], pch=16, ylim=c(-3,3),
+     cex=sqrt(table.zip[,2]/pi)*0.2,
+     col=rgb(0,0,0,0.4),# main="Effect by ZIP Code",
+     xlab = "Proportion Asian", ylab="Coefficient")
+segments(prop.asian, betas[,1]+betas[,2],
+         prop.asian, betas[,1]-betas[,2])
+abline(h=0,col="darkgrey")
+dev.off()
+
+cairo_ps('../../figs/QQplot_KC.eps', height=3.5,width=3.5,family = 'Times')
+par(mfrow=c(1,1))
+par(mar=c(3,3,2,1),mgp=c(1.5,0.5,0),tcl=-0.3)
+qqplot(dta$inspection_prev_penalty_score[dta$asian==0],
+       dta$inspection_prev_penalty_score[dta$asian==1],
+       xlim=c(0,80),ylim=c(0, 80),
+       pch=16,cex=0.4,col=rgb(0,0,0,0.4),
+       xlab="Non-Asian scores", ylab="Asian scores",
+       main="a) King County",font.main=1)
+abline(a=0,b=1,col="darkgrey")
+dev.off()
+
+
+
+
+
+
+
 
 
 

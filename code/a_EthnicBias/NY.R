@@ -4,6 +4,8 @@
 
 rm(list=ls())
 
+#setwd('/Users/kristen/Dropbox/YelpBias/kristen_sandbox/final_paper_code/JITE_git_upload/Bias/code/a_EthnicBias/')
+
 library(data.table)
 library(lubridate)
 library(xtable)
@@ -84,13 +86,16 @@ count.agg <- aggregate(rep(1,nrow(dta)) ~ bin + Asian, data=dta, FUN=sum)
 complaint.agg$count <- count.agg[,3]
 complaint.agg$se <- complaint.agg$complaint * (1-complaint.agg$complaint) / sqrt(complaint.agg$count)
 
-par(mar=c(3,3,2,1), mgp=c(1.5,0.5,0), tcl=-0.3)
+
+## Plotting as pdf
+pdf("../../figs/NY-ScoreComplaint.pdf", height=4.5, width=6)
+par(mar=c(3,3,2,1), mgp=c(1.5,0.5,0), tcl=-0.3,family = 'Times')
 plot(complaint.agg$bin[complaint.agg$Asian==0],
      complaint.agg$complaint[complaint.agg$Asian==0], xlim=c(0,20),
      ylim=c(0, 0.07),
      axes=F,
      pch=16, cex=sqrt(complaint.agg$count[complaint.agg$Asian==0]/pi)*0.1,
-     col=rgb(0,0,0,0.4), xlab="Inspection Score", ylab="Complaint", main="Inspection Score and 311 Complaint")
+     col=rgb(0,0,0,0.4), xlab="Inspection Score", ylab="Complaint")#, main="Inspection Score and 311 Complaint")
 points(complaint.agg$bin[complaint.agg$Asian==1],
        complaint.agg$complaint[complaint.agg$Asian==1],col="black",
        pch=1, cex=sqrt(complaint.agg$count[complaint.agg$Asian==1]/pi)*0.1, lwd=1)
@@ -99,6 +104,49 @@ text(5, 0.06, "Asian",cex=0.8,col="black")
 axis(1, at=bin.labels-0.5, labels=my.breaks[1:(length(my.breaks)-1)])
 axis(2)
 box()
+dev.off()
+
+
+## Plotting as eps
+cairo_ps("../../figs/NY-ScoreComplaint.eps",family = 'Times',height=4.5, width=6,
+         fallback_resolution = 600)
+par(mar=c(3,3,2,1), mgp=c(1.5,0.5,0), tcl=-0.3)
+plot(complaint.agg$bin[complaint.agg$Asian==0],
+     complaint.agg$complaint[complaint.agg$Asian==0], xlim=c(0,20),
+     ylim=c(0, 0.07),
+     axes=F,
+     pch=16, cex=sqrt(complaint.agg$count[complaint.agg$Asian==0]/pi)*0.1,
+     col=rgb(0,0,0,0.4), xlab="Inspection Score", ylab="Complaint")#, main="Inspection Score and 311 Complaint")
+points(complaint.agg$bin[complaint.agg$Asian==1],
+       complaint.agg$complaint[complaint.agg$Asian==1],col="black",
+       pch=1, cex=sqrt(complaint.agg$count[complaint.agg$Asian==1]/pi)*0.1, lwd=1)
+text(2.5,0.03, "Non-Asian",cex=0.8)
+text(5, 0.06, "Asian",cex=0.8,col="black")
+axis(1, at=bin.labels-0.5, labels=my.breaks[1:(length(my.breaks)-1)])
+axis(2)
+box()
+dev.off()
+
+
+## QQ plot
+cairo_ps('../../figs/QQplot_NY.eps', height=3.5,width=3.5,family = 'Times')
+par(mfrow=c(1,1))
+par(mar=c(3,3,2,1),mgp=c(1.5,0.5,0),tcl=-0.3)
+with(dta,
+     qqplot(SCORE[Asian==0],
+            SCORE[Asian==1],
+            xlim=c(0,80),ylim=c(0, 80),
+            pch=16,cex=0.4,col=rgb(0,0,0,0.4),
+            xlab="Non-Asian scores", ylab="Asian scores",
+            main="b) New York",font.main=1)
+)
+abline(a=0,b=1,col="darkgrey")
+
+dev.off()
+
+
+
+
 
 ## =========================
 ## ANALYSIS
