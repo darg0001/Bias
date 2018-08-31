@@ -163,7 +163,7 @@ my.ylim <- range(dta$y)
 my.pch <- (3*dta$x.sup) + 16*(1-dta$x.sup)
 
 
-cairo_ps("./figs/fig3.eps",family = 'Times', height=2,width=8,
+cairo_ps("./figs/IllustrateExtrapolation.eps",family = 'Times', height=2,width=8,
          fallback_resolution = 600)
 par(mfrow=c(1,4))
 par(mar=c(3,3,2,1), mgp=c(1.5,0.5,0), tcl=-0.3)
